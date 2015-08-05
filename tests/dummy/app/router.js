@@ -7,6 +7,7 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('bubble-1');
+  this.route('cher-jules');
   this.route('stacked-bar');
 });
 
