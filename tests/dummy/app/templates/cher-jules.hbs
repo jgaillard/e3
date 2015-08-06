@@ -1,20 +1,38 @@
 {{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+
+  <!-- setting scales -->
   <metadata>
     {{e3-scale/linear ctx 'x'
-      domain=(e3-extent model key='goodCount' padding=0.2 min-delta=5)
+      domain=(e3-extent model.length padding=0.2 min-delta=5)
       range=ctx.horizontalRange
     }}
     {{e3-scale/linear ctx 'y'
       domain=(e3-extent model key='badCount' padding=0.8 min-delta=5)
       range=ctx.verticalRange
     }}
+
   </metadata>
 
-  {{#each model as |data|}}
-    {{e3-shape/circle ctx
+  {{#each model as |data index|}}
+  <!-- goodCount -->
+    {{e3-shape/rectangle ctx
       data=data
-      x=(e3-bind-scale meta.scales.x 'goodCount')
-      y=(e3-bind-scale meta.scales.y 'badCount')
+      x=(bind-spaced-scale meta.scales.x index 60)
+      y=0
+      width=5
+      height=(e3-bind-scale meta.scales.y 'goodCount')
+      fill="green"
+    }}
+
+    <!-- badCount  -->
+    {{e3-shape/rectangle ctx
+      data=data
+      x=(bind-spaced-scale meta.scales.x index 60)
+      <!-- TODO: write helper to allow negative y values -->
+      y=(e3-bind-scale meta.scales.y -'badCount')
+      width=5
+      height=(e3-bind-scale meta.scales.y 'badCount')
+      fill="red"
     }}
   {{/each}}
 {{/e3-container}}
